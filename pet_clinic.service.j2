@@ -1,0 +1,10 @@
+[Unit]
+Description=Pet clinic
+
+[Service]
+ExecStart=/usr/bin/java -jar -Dspring.profiles.active=mysql -Dspring.datasource.initialize=true /home/pet_clinic/spring-petclinic.jar
+User=pet_clinic
+Group=pet_clinic
+
+[Install]
+WantedBy=multi-user.target

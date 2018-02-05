@@ -1,0 +1,26 @@
+---
+- hosts: environment
+  tasks:
+    - name: Get artifact
+      maven_artifact:
+        username: deploy
+        password: deploy
+        repository_url: http://10.0.3.29:8081/repository/maven-snapshots/
+        group_id: org.springframework.samples
+        artifact_id: spring-petclinic
+        dest: /home/pet_clinic/spring-petclinic.jar 
+        version: "{{ version }}"
+      become: yes
+      become_user: pet_clinic
+    - name: Provide pet clinic systemd unit file
+      template:
+        src: pet_clinic.service.j2
+        dest: /usr/lib/systemd/system/pet_clinic.service
+        owner: root
+      become: yes
+    - name: Start pet clinic
+      service:
+        name: pet_clinic
+        state: restarted 
+      become: yes
+     
